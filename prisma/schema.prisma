@@ -6,9 +6,9 @@ generator client {
 
 model User {
    id          Int       @default(autoincrement()) @id
-   firstname   String
-   lastname    String
-   gender      String
+   firstname   String?
+   lastname    String?
+   gender      String?
 
    posts       Post[]
 }
