@@ -18,6 +18,7 @@ app.get('/api/users/:id', async (req, res) => {
 
 app.post('/api/users', async (req, res) => {
    const user = await prisma.User.create({
+      where,
       data: req.body
    })
    res.send(user)
@@ -25,9 +26,6 @@ app.post('/api/users', async (req, res) => {
 
 app.put('/api/users/:id', async (req, res) => {
    const id = parseInt(req.params.id)
-   const user = await prisma.User.findUnique({
-      where: { id }
-   })
    const updatedUser = await prisma.User.update({
       where: { id },
       data: req.body,
@@ -37,9 +35,6 @@ app.put('/api/users/:id', async (req, res) => {
 
 app.patch('/api/users/:id', async (req, res) => {
    const id = parseInt(req.params.id)
-   const user = await prisma.User.findUnique({
-      where: { id }
-   })
    const updatedUser = await prisma.User.update({
       where: { id },
       data: req.body,
@@ -56,7 +51,8 @@ app.delete('/api/users/:id', async (req, res) => {
 })
 
 app.get('/api/users', async (req, res) => {
-   const users = await prisma.User.findMany({})
+   const where = Object.keys(req.query).length > 0 ? req.query : undefined
+   const users = await prisma.User.findMany({ where })
    res.send(users)
 })
 
